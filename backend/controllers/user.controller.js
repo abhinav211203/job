@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import getDataUri from "../utils/datauri.js";
 import { isCloudinaryConfigured, uploadToCloudinary } from "../utils/cloudinary.js";
+import { cookieOptions } from "../utils/cookieOptions.js";
 
 export const register = async (req, res) => {
     try {
@@ -112,7 +113,7 @@ export const login = async (req, res) => {
             profile: user.profile
         }
 
-        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'strict' }).json({
+        return res.status(200).cookie("token", token, cookieOptions).json({
             message: `Welcome back ${user.fullname}`,
             user,
             success: true
@@ -123,7 +124,10 @@ export const login = async (req, res) => {
 }
 export const logout = async (req, res) => {
     try {
-        return res.status(200).cookie("token", "", { maxAge: 0 }).json({
+        return res.status(200).cookie("token", "", {
+            ...cookieOptions,
+            maxAge: 0,
+        }).json({
             message: "Logged out successfully.",
             success: true
         })
