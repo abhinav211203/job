@@ -119,8 +119,12 @@ export const login = async (req, res) => {
             success: true
         })
     } catch (error) {
-        console.log(error);
-    }
+  console.log(error);
+  return res.status(500).json({
+    message: error.message || "Login failed",
+    success: false
+  });
+}
 }
 export const logout = async (req, res) => {
     try {
@@ -132,8 +136,12 @@ export const logout = async (req, res) => {
             success: true
         })
     } catch (error) {
-        console.log(error);
-    }
+  console.log(error);
+  return res.status(500).json({
+    message: "Logout failed",
+    success: false
+  });
+}
 }
 export const updateProfile = async (req, res) => {
     try {
